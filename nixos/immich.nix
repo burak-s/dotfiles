@@ -39,6 +39,13 @@ in
     # sonradan taranarak indekslenir.
     machine-learning.enable = false;
 
+    # Phone-home'u kapat: sürüm kontrolü upstream varsayılanı açık ve
+    # periyodik github.com'a bağlanır. Fotoğraf/GPS göndermez ama hiçbir
+    # dış bağlantı olmasın istiyorsak kapalı olmalı.
+    settings = {
+      newVersionCheck.enabled = false;
+    };
+
     # DB şifresi gerekmez: modül varsayılan olarak unix socket
     # (/run/postgresql) üzerinden bağlanır.
   };
