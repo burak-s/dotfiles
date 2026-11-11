@@ -1,0 +1,5 @@
+**/.claude/settings.local.json
+
+# Environment files, including .env.production, .env.qa and .env.local.
+.env
+.env.*

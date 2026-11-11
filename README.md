@@ -1,6 +1,6 @@
 # dotfiles
 
-Kişisel NixOS, Neovim, tmux, zsh ve Ghostty ayarlarım.
+Kişisel NixOS, Neovim, tmux, zsh, Ghostty, Git ve Pi ayarlarım.
 
 ## Ortam
 
@@ -9,6 +9,7 @@ Kişisel NixOS, Neovim, tmux, zsh ve Ghostty ayarlarım.
 - **tmux** — `Ctrl-a` prefix, Vim tarzı pane gezinmesi, Türkçe klavyeye uygun bölme tuşları ve pi popup.
 - **zsh** — Oh My Zsh / Eastwood, autosuggestions, syntax highlighting, fzf ve zoxide.
 - **Ghostty** — açık/koyu Gruvbox, JetBrains Mono ve clipboard kısayolları.
+- **Pi** — model ve arayüz tercihleri, ortak agent kuralları ve yerel model yolu içermeyen ses ayarı şablonu. Kimlik bilgileri ve oturumlar dahil değildir.
 
 ## Araçlar
 
@@ -19,7 +20,9 @@ Go, Rust, Node.js 26, kubectl, AWS CLI v2, MongoDB Database Tools; git, ripgrep,
 ```text
 config/
 ├── ghostty/       # Terminal
+├── git/           # Kullanıcı kimliği ve global ignore
 ├── nvim/          # Editör, Lua modülleri ve plugin lockfile
+├── pi/            # Agent ayarları
 ├── tmux/          # Multiplexer
 └── zsh/           # Ortak shell ayarları
 nixos/

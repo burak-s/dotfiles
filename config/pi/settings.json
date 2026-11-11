@@ -1,0 +1,26 @@
+{
+  "enableInstallTelemetry": false,
+  "packages": [
+    "npm:@earendil-works/pi-voice"
+  ],
+  "compaction": {
+    "enabled": true
+  },
+  "terminal": {
+    "showImages": true
+  },
+  "markdown": {
+    "mermaid": "streaming"
+  },
+  "showCacheMissNotices": true,
+  "collapseChangelog": true,
+  "quietStartup": true,
+  "defaultProjectTrust": "always",
+  "treeFilterMode": "default",
+  "modelThinkingLevels": {
+    "openai-codex/gpt-6.1-sol": "medium"
+  },
+  "defaultProvider": "openai-codex",
+  "defaultModel": "gpt-6.1-sol",
+  "hideThinkingBlock": true
+}

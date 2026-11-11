@@ -1,0 +1,16 @@
+# Only portable configuration belongs here.
+/*
+!/.gitignore
+!/AGENTS.md
+!/settings.json
+!/pi-voice.json.example
+
+# Local state must never be committed.
+**/.env
+**/.env.*
+**/auth.json
+**/trust.json
+**/models-store.json
+**/node_modules/
+**/__pycache__/
+**/*.pyc

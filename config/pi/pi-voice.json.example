@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "backend": {
+    "type": "transcribe-cpp"
+  },
+  "shortcut": "ctrl+alt+z",
+  "preferredLanguages": [
+    "en"
+  ],
+  "transcriptionLanguage": "auto",
+  "chineseOutput": "simplified",
+  "microphone": {
+    "type": "system-default"
+  },
+  "model": {
+    "source": "catalog",
+    "id": "Qwen3-ASR-0.6B",
+    "path": "<absolute-path-to-local-Qwen3-ASR-0.6B-Q8_0.gguf>"
+  }
+}
