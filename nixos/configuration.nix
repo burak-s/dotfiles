@@ -150,6 +150,10 @@
   # Install firefox.
   programs.firefox.enable = true;
 
+  # Login'de ssh-agent baslat; anahtar sifresi boot basina bir kez sorulur
+  # (AddKeysToAgent ile ~/.ssh/config birlesince).
+  programs.ssh.startAgent = true;
+
   # Allow unfree packages
   nixpkgs.config.allowUnfree = true;
 
