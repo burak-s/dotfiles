@@ -1,0 +1,8 @@
+keybind=performable:ctrl+c=copy_to_clipboard
+keybind=ctrl+v=paste_from_clipboard
+theme=dark:Gruvbox Dark,light:Gruvbox Light
+shell-integration=zsh
+font-family=JetBrains Mono
+font-size = 9
+# --- imlec: terminal (shell) imleci de cizgi olsun; nvim kendi imlecini ayrica ayarliyor
+cursor-style = bar

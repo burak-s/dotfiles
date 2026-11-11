@@ -1,14 +1,5 @@
-# Oh My Zsh ve eklentileri NixOS yüklüyor.
-ZSH_AUTOSUGGEST_STRATEGY=(history completion)
-ZSH_AUTOSUGGEST_USE_ASYNC=true
-ZSH_AUTOSUGGEST_HIGHLIGHT_STYLE='fg=8'
-
-zstyle ':completion:*' menu select
-zstyle ':completion:*' matcher-list 'm:{a-zA-Z}={A-Za-z}' 'r:|[._-]=* r:|=*'
-
-# Sağ ok / End ile öneriyi kabul et.
-bindkey '^[[C' autosuggest-accept
-bindkey '^[[F' autosuggest-accept
+# Ortak shell ayarlari config/zsh/common.zsh icinde.
+# Bu dosya mevcut NixOS makinesine ozel kisayollari tutar.
 
 # --- Konsol / KDE Plasma yönetimi -------------------------------------------
 # Plasma (Wayland) oturumunu bulundugun tty'de baslat (display manager yok).

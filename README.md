@@ -1,20 +1,27 @@
 # ~/dotfiles
 
-Bu depo, `/etc/nixos` altindaki NixOS konfigürasyonunun dotfiles'a tasinmis halidir.
-Flake tabanlidir: `nixosConfigurations.nixos`.
+NixOS sistem ayarları ve ortak tmux, Neovim, zsh, Ghostty configleri.
+Flake çıktısı: `nixosConfigurations.nixos`. Mevcut yerel configler kopyalanmıştır;
+kaynak dosyalar taşınmaz veya silinmez.
 
 ## Yapi
 
 ```
 ~/dotfiles/
 ├── flake.nix                  # Giriş noktası; nixpkgs rev'i sisteme sabitli
-├── flake.lock                 # nix build tarafından üretilir
+├── flake.lock                 # Sabitlenmiş input revizyonları
 ├── README.md
+├── config/
+│   ├── nvim/                  # Lua configleri ve vim.pack lockfile
+│   ├── tmux/tmux.conf
+│   ├── zsh/common.zsh          # Ortak shell davranışı ve güvenli PATH ayarları
+│   └── ghostty/config.ghostty
 └── nixos/
     ├── configuration.nix      # Ana konfigürasyon
     ├── hardware-configuration.nix
-    ├── server-tools.nix       # zsh, oh-my-zsh, zoxide vb.
-    ├── shell.zsh              # server-tools.nix tarafından readFile ile çekilir
+    ├── server-tools.nix       # Shell, CLI araçları, dil araçları ve font
+    ├── editors.nix            # Neovim, tmux, LSP ve editör gereksinimleri
+    ├── shell.zsh              # Makineye özel NixOS kısayolları
     ├── adguardhome.nix
     ├── vaultwarden.nix
     └── experiments/
@@ -24,8 +31,41 @@ Flake tabanlidir: `nixosConfigurations.nixos`.
 ## Rebuild
 
 ```bash
-sudo nixos-rebuild switch --flake ~/dotfiles#nixos
+cd ~/dotfiles
+# Yeni dosyalar flake tarafından görülebilmek için Git'e eklenmiş olmalı.
+git add config nixos
+sudo nixos-rebuild dry-build --flake .#nixos
+sudo nixos-rebuild switch --flake .#nixos
 ```
+
+### Paketler ve configlerin uygulanması
+
+- `server-tools.nix`: zsh / Oh My Zsh (Eastwood), öneriler, completion,
+  zoxide (`z` / `zi`), git, fzf, ripgrep ve sistem teşhis araçları.
+- Geliştirme: Go, Node 26, Rust (`rustc`, `cargo`, `rustfmt`, `clippy`).
+  Rust standart kütüphane kaynakları `RUST_SRC_PATH` ile sağlanır.
+- Altyapı: `kubectl`, AWS CLI v2 (`aws`), MongoDB Database Tools
+  (`mongodump`, `mongorestore`, `mongoimport`, `mongoexport` vb.).
+- Font: JetBrains Mono. Ghostty ve Discord PTB kullanıcı paketleridir.
+- `editors.nix`, tmux configini `/etc/tmux.conf` içine ekler. Prefix `Ctrl-a`;
+  `v` / `-` ile bölme, `h/j/k/l` ile gezinme, `r` ile yeniden yükleme.
+- Neovim 0.12+ gereklidir. Config `/etc/xdg/nvim` üzerinden yüklenir;
+  pluginler `vim.pack` ile yönetilir. İlk açılışta pluginler ve Treesitter
+  parserları için internet gerekir. Lockfile'ın yazılabilir kopyası ilk
+  açılışta kullanıcı config dizininde oluşturulur.
+- NixOS'ta LSP sunucuları Mason yerine Nix paketlerinden gelir; Go, Rust,
+  JS/TS, Lua, JSON, YAML, Helm, Bash, Docker ve Tailwind desteği vardır.
+- Var olan `~/.config/nvim/init.lua` ve kullanıcı tmux configi ortak
+  varsayılanları gölgeleyebilir. Rebuild bu yerel dosyaları değiştirmez.
+- Ghostty configi repoda saklanır, henüz NixOS tarafından otomatik kurulmaz.
+  Kullanmak istediğin makinede mevcut configini kontrol edip gerekirse yedekleyerek
+  `config/ghostty/config.ghostty` dosyasını `~/.config/ghostty/config.ghostty`
+  konumuna kopyala.
+
+Ortak zsh ayarları `~/.zshrc` / `~/.zshenv` dosyalarını değiştirmez.
+Makineye özel SDK yolları, otomatik SSH agent başlatma ve `als`/cheatsheet
+aktarılmamıştır. SSH anahtarları, AWS kimlik bilgileri, kubeconfig ve tokenları
+repoya ekleme.
 
 Kolaylik icin zsh alias'lari kondu: `nrswitch`, `nrtest`, `nrdry`, `nrbuild`, `ncd`.
 
@@ -63,13 +103,16 @@ flake.nix icinde rev sisteme sabitli (26.05.13627.c56a87d8e41c):
 
 ```bash
 cd ~/dotfiles
-nix flake update        # yeni rev'i lock'a isler
+# Önce flake.nix içindeki sabit nixpkgs revizyonunu güncelle.
+nix flake update        # Seçilen input revizyonunu lock'a işler
 sudo nixos-rebuild switch --flake .#nixos
 ```
 
 ## Sonraki adim (opsiyonel): home-manager
 
-`~/.config` (ghostty, btop, KDE rc dosyalari) henuz dotfiles'ta degil.
+Ghostty, Neovim ve tmux configleri `config/` altında tutulur;
+btop ve KDE kullanıcı ayarları henüz yönetilmez. Mevcut flake tek makineyi
+(`nixos`) tanımlar; desktop/laptop için ayrı host çıktıları henüz yoktur.
 Istenirse home-manager modul olarak eklenebilir:
 
 - `inputs.home-manager.url = "github:nix-community/home-manager/master"`
