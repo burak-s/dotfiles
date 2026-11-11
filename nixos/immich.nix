@@ -34,15 +34,10 @@ in
     host = "127.0.0.1";
     port = 2283;
 
-    # Yüz tanıma / nesne arama ML servisi (varsayılan açık).
-    # Laptop'ta CPU'ya binmesin istersen: machine-learning.enable = false;
-    machine-learning = {
-      enable = true;
-      environment = {
-        # GPU varsa OpenVINO hızlandırma (Intel iGPU):
-        # MACHINE_LEARNING_DEVICE = "openvino";
-      };
-    };
+    # ML servisi kapalı (yüz tanıma/akıllı arama yok; yedekleme etkilenmez).
+    # İsteyince: enable = true yapıp tekrar rebuild et — kütüphane
+    # sonradan taranarak indekslenir.
+    machine-learning.enable = false;
 
     # DB şifresi gerekmez: modül varsayılan olarak unix socket
     # (/run/postgresql) üzerinden bağlanır.
