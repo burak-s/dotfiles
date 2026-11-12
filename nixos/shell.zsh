@@ -9,8 +9,10 @@ alias plasma='exec startplasma-wayland'
 # Artik gereksiz: display manager yok. Plasma'da "Oturumu Kapat" yeterli.
 alias nogui='echo "Display manager yok; Plasma oturumundan cikman yeterli."'
 
-# Ekranı SSH'den hemen kapat.
-alias monitor='sudo sh -c "echo 1 > /sys/class/graphics/fb0/blank"'
+# Ekranı SSH'den hemen kapat / aç. NOPASSWD sudo kuralı sayesinde
+# şifre sormadan, SSH oturumundan bile çalışır.
+alias monitor='sudo -n /run/current-system/sw/bin/monoff'
+alias monitor-on='sudo -n /run/current-system/sw/bin/monon'
 
 # NixOS shortened aliases (dotfiles / flake tabanli)
 alias ncd='cd ~/dotfiles/nixos'
