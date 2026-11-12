@@ -1,7 +1,26 @@
 { pkgs, ... }:
 
+let
+  # Ekran kapat/ac komutlari (sysfs fb blank). Root gerektirir, sudo
+  # NOPASSWD kurali ile sifresiz calisir (SSH oturumundan dahil).
+  monoff = pkgs.writeShellScriptBin "monoff" ''
+    echo 1 > /sys/class/graphics/fb0/blank
+  '';
+  monon = pkgs.writeShellScriptBin "monon" ''
+    echo 0 > /sys/class/graphics/fb0/blank
+  '';
+in
 {
   imports = [ ./editors.nix ];
+
+  # monitor / monitor-on kisa yollarini sifresiz kullan.
+  security.sudo.extraRules = [{
+    users = [ "burak" ];
+    commands = [
+      { command = "${monoff}/bin/monoff"; options = [ "NOPASSWD" ]; }
+      { command = "${monon}/bin/monon"; options = [ "NOPASSWD" ]; }
+    ];
+  }];
 
   # Mevcut sunucu kullanıcının adı farklıysa burak kısmını değiştir.
   users.users.burak.shell = pkgs.zsh;
@@ -27,6 +46,8 @@
   environment.variables.RUST_SRC_PATH = "${pkgs.rustPlatform.rustLibSrc}";
 
   environment.systemPackages = with pkgs; [
+    monoff
+    monon
     git
     fzf
     ripgrep
@@ -51,6 +72,5 @@
 
   users.users.burak.packages = with pkgs; [
     ghostty
-    discord-ptb
   ];
 }

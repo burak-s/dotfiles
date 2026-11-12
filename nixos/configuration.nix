@@ -12,6 +12,7 @@
       ./adguardhome.nix
       ./vaultwarden.nix
       ./immich.nix
+      ./others.nix
     ];
 
   nix.settings.experimental-features = [
