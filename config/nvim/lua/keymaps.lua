@@ -43,17 +43,9 @@ map('n', '<leader>p', '"+p', { desc = 'Sistem panosundan yapistir' })
 map('x', '<leader>p', '"_d"+P', { desc = 'Secimi sistem panosuyla degistir' })
 
 -- ------------------------------------------------------------- dosyalar
--- Yerlesik dosya agaci (netrw): sol panelde acar/kapatir. Tek pencere, ust uste binmez.
-map('n', '<leader>e', function()
-  for _, win in ipairs(vim.api.nvim_tabpage_list_wins(0)) do
-    if vim.bo[vim.api.nvim_win_get_buf(win)].filetype == 'netrw' then
-      vim.api.nvim_win_close(win, true)
-      return
-    end
-  end
-  vim.cmd('Lexplore')
-end, { desc = 'Dosya agaci (netrw) ac/kapa' })
-map('n', '<leader>E', '<Cmd>Explore<CR>', { desc = 'Dosya agaci (bu pencerede)' })
+-- nvim-tree: ac/kapa. Git durum renkleri plugins.lua'da kurulu.
+map('n', '<leader>e', '<Cmd>NvimTreeToggle<CR>', { desc = 'Dosya agaci ac/kapa' })
+map('n', '<leader>E', '<Cmd>NvimTreeFindFile<CR>', { desc = 'Agacta bu dosyayi goster' })
 
 -- ----------------------------------------------------------------- buffer
 -- mini.bufremove: buffer'i kapatir ama pencere duzenini bozmaz (bdelete gibi

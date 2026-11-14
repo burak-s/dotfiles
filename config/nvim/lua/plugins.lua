@@ -14,25 +14,69 @@ vim.pack.add({
   { src = gh('lewis6991/gitsigns.nvim') },
   { src = gh('sindrets/diffview.nvim') },
   { src = gh('ibhagwan/fzf-lua') },
+  { src = gh('nvim-tree/nvim-tree.lua') },    -- dosya agaci + git durum renkleri
   { src = gh('echasnovski/mini.nvim') },
-  { src = gh('ellisonleao/gruvbox.nvim') },
+  { src = gh('olimorris/onedarkpro.nvim') }, -- tema: Zed'deki One Dark (Atom One Dark)
 })
 
 -- tema: Ghostty ile ayni.
--- Ghostty tarafi: theme=dark:Gruvbox Dark,light:Gruvbox Light -> masaustu koyu
--- (KDE: BreezeDark) oldugu icin terminal 'Gruvbox Dark' gosteriyor, arka plan #282828.
--- Buradaki contrast='' ayni varyanti (medium) secip ayni #282828'i kullaniyor.
--- Masaustunu acik temaya alirsan tek satir: vim.o.background = 'light'
+-- Ghostty tarafi: theme=dark:Atom One Dark,light:Atom One Light -> masaustu koyu
+-- oldugu icin terminal 'Atom One Dark' gosteriyor, arka plan #282c34 (Zed One Dark).
+-- Masaustunu acik temaya alirsan iki satir degisir: buradaki colorscheme + ghostty config.
 vim.o.background = 'dark'
 
-require('gruvbox').setup({
-  contrast = '', -- '' = medium (Gruvbox Dark/Light). 'hard'/'soft' farkli arka plan verir.
-  italic = { strings = false, comments = true, operators = false, folds = false },
-  transparent_mode = false, -- arka plani temanin rengiyle boya (terminalle birebir ayni ton)
+-- Zed'in 'One Dark' temasinin birebir paleti (zed-industries/zed assets/themes/one/one.json).
+-- onedarkpro'nun default'u Atom One Dark; Zedinki daha desature, beyaz agirlikli.
+-- Fark: Zed degiskenleri BEYAZ (#acb2be), onedarkpro ise kirmizi basiyor.
+-- @variable ve @module en onemli override'lar; kalanlari palet override'i hallediyor.
+require('onedarkpro').setup({
+  colors = { onedark = {
+    fg = '#acb2be', white = '#acb2be',      -- Zed primary/variable/punctuation
+    red = '#d07277',                          -- property/parameter/title
+    green = '#a1c181',                        -- string
+    yellow = '#dfc184',                       -- constant/selector
+    blue = '#73ade9',                         -- function
+    purple = '#b477cf',                       -- keyword
+    orange = '#bf956a',                       -- number/boolean/variable.special
+    cyan = '#6eb4bf',                         -- type/operator/enum
+    comment = '#5d636f',                      -- comment (doc yorumlari icin ayrica #878e98)
+    gray = '#878e98',
+    -- onedarkpro git renklerini sign column icin karartiyor (darken 30-35%);
+    -- gutter isaretleri ince '▎' ama parlak renk yine iyi
+    git_add = '#a1c181', git_change = '#73ade9', git_delete = '#d07277',
+  } },
+  highlights = {
+    -- onedarkpro'da degiskenler kirmizi; Zed'de beyaz
+    ['@variable'] = { fg = '#acb2be' },
+    ['@variable.builtin'] = { fg = '#bf956a' },    -- Zed: variable.special (this, self)
+    ['@variable.parameter'] = { fg = '#d07277' },
+    ['@variable.member'] = { fg = '#d07277' },
+    ['@property'] = { fg = '#d07277' },
+    ['@module'] = { fg = '#dce0e5' },              -- Zed: namespace (nerdeyse beyaz)
+    ['@function.builtin'] = { fg = '#73ade9' },    -- Zed'de builtin fonksiyonlar da mavi
+    ['@constructor'] = { fg = '#73ade9' },
+    Type = { fg = '#6eb4bf' },                     -- Zed: type teal (@type buna link)
+    ['@constant'] = { fg = '#dfc184' },
+    ['@constant.builtin'] = { fg = '#bf956a' },    -- Zed: boolean (true/false/nil)
+    ['@attribute'] = { fg = '#74ade8' },
+    ['@tag'] = { fg = '#74ade8' },
+    ['@label'] = { fg = '#74ade8' },
+    ['@string.escape'] = { fg = '#878e98' },
+    ['@string.regex'] = { fg = '#bf956a' },
+    ['@string.special'] = { fg = '#bf956a' },
+  },
+  styles = { comments = 'italic' },
+  filetypes = { -- ft-ozel renk gruplarini kapat: kod dili fark etmeksizin ayni palet
+    c = false, comment = false, go = false, html = false, java = false,
+    javascript = false, json = false, latex = false, lua = false, markdown = false,
+    php = false, python = false, ruby = false, rust = false, scss = false,
+    toml = false, typescript = false, typescriptreact = false, vue = false,
+    xml = false, yaml = false,
+  },
 })
 
 -- pcall: ilk calistirmada eklenti henuz diske inmemis olabilir
-pcall(vim.cmd.colorscheme, 'gruvbox')
+pcall(vim.cmd.colorscheme, 'onedark')
 
 -- Language servers for THIS stack and nothing more.
 --   gopls   -> the ~40 Go services
@@ -108,6 +152,30 @@ require('mini.statusline').setup({
 })
 
 require('fzf-lua').setup({ 'default-title' })
+
+-- dosya agaci: netrw yerine nvim-tree. Git durumu ikonlarda + dosya adini
+-- boyan: degistirilmis (yesil "*" degil, M), staged, untracked, ignored.
+-- Devicons mini.icons'tan geliyor (yukarida mock_nvim_web_devicons var).
+require('nvim-tree').setup({
+  disable_netrw = true,
+  hijack_netrw = true,
+  git = { enable = true, timeout = 500 },
+  modified = { enable = true },       -- kaydedilmemis buffer degisiklikleri
+  filters = { dotfiles = false, git_ignored = false },
+  diagnostics = { enable = false },   -- agacta H/W linter harfleri olmasin; diagnostics buffer'da zaten var
+  renderer = {
+    highlight_git = 'name',           -- dosya adini git durumuna gore boya
+    highlight_modified = 'name',
+    highlight_opened_files = 'name',
+    indent_markers = { enable = true }, -- agac dallari cizgiyle belli olsun
+  },
+  actions = {
+    open_file = {
+      quit_on_open = true,            -- dosya secince agac kapansin (eski <leader>e davranişi)
+      resize_window = true,
+    },
+  },
+})
 
 -- ------------------------------------------------------- oturum geri yukleme
 -- mini.sessions'in kendi 'autoread'ini bilerek kullanmiyoruz: read(isim=nil)

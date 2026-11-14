@@ -63,6 +63,11 @@ vim.keymap.set('n', '<leader>gR', guard(function()
   confirm_reset('Dosyanin stage edilmemis TUM degisiklikleri geri alinsin mi?', gs.reset_buffer)
 end), { desc = 'Dosyayi revert (onayli)' })
 vim.keymap.set('n', '<leader>gB', guard(function() gs.blame_line({ full = true }) end), { desc = 'Satir blame' })
+-- Hunk'in eski/yeni halini satir ici goster: silinen satirlar sanal metin olarak
+-- ustunde, degisen kelimeler renkli. Tekrar basarsan kapanir.
+-- (gD/gd/gv/gL dosya-repo diff'lerinde; burasi hunk-preview icin ayri)
+vim.keymap.set('n', '<leader>gI', guard(gs.preview_hunk_inline), { desc = 'Hunk satir-ici diff' })
+vim.keymap.set('n', '<leader>gi', guard(gs.preview_hunk), { desc = 'Hunk diff (float pencere)' })
 vim.keymap.set('n', '<leader>gt', guard(gs.toggle_current_line_blame), { desc = 'Satir-ici blame ac/kapa' })
 
 require('diffview').setup({})

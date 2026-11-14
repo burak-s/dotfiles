@@ -3,7 +3,7 @@ local o = vim.opt
 
 -- look
 o.number = true
-o.relativenumber = true
+o.relativenumber = false
 o.signcolumn = 'yes'
 o.cursorline = true
 o.scrolloff = 8
@@ -47,12 +47,8 @@ o.undofile = true
 o.completeopt = { 'menuone', 'noselect', 'popup' }
 o.pumheight = 12
 
--- Yerlesik dosya agaci: netrw. Neovim'in kendi parcasi, eklenti degil.
--- Acmak icin <Space>e (sol panel) veya :Explore / :Vexplore / :Sex
-vim.g.netrw_banner = 0        -- ustteki bilgi/reklam satirini kapat
-vim.g.netrw_liststyle = 3     -- 3 = agac gorunumu
-vim.g.netrw_winsize = 25      -- sol panel genisligi (yuzde)
-vim.g.netrw_browse_split = 4  -- dosya onceki (sag) pencerede acilsin, agac yerinde kalsin
+-- Dosya agaci: nvim-tree (plugins.lua). netrw kaldirildi; disable_netrw=true.
+-- Not: vim.pack lockfile'a yeni eklenti girince bir kere vim.pack.update gerekir.
 
 -- Normal mod blok, insert modu cizgi: hangi modda oldugun belli olsun.
 vim.o.guicursor = 'n-v-c-sm:block,i-ci-ve:ver25,r-cr-o:hor20'
