@@ -57,7 +57,10 @@ in
     dnsutils   # dig / DNS teşhisi
     curl       # HTTP / health check
     jq         # JSON çıktıları
+    openssl    # Sertifika / TLS teşhisi
     kubectl
+    kubectx    # kubectx / kubens bağlam ve namespace geçişi
+    kubernetes-helm # helm (Kubernetes paket yöneticisi)
     awscli2    # AWS CLI v2
     mongodb-tools # mongodump, mongorestore, mongoimport, mongoexport
     nodejs_26  # Node 26
